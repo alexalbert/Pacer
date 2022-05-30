@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent" android:id="@+id/main"
+	android:background="@android:color/black"
+	android:weightSum="1.0">
+
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_weight="0.3"
+		android:background="@android:color/black"
+		android:orientation="horizontal">
+
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:layout_weight="1"
+			android:orientation="vertical">
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:gravity="center"
+				android:paddingTop="5dip"
+				android:paddingBottom="5dip"
+				android:text="Interval"
+				android:textColor="@android:color/white"
+				android:textSize="24dip"
+				android:textStyle="bold" />
+
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:orientation="horizontal">
+
+				<EditText
+					android:id="@+id/minutes"
+					android:layout_width="80dip"
+					android:layout_height="60dip"
+					android:digits="1234567890"
+					android:gravity="center"
+					android:maxLength="4"
+					android:textColor="@android:color/white"
+					android:textSize="24dip" />
+
+				<TextView
+					android:id="@+id/label_colon"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text=":"
+					android:textColor="@android:color/white"
+					android:textSize="34dip"
+					android:textStyle="bold" />
+
+				<EditText
+					android:id="@+id/seconds"
+					android:layout_width="80dip"
+					android:layout_height="60dip"
+					android:digits="1234567890"
+					android:gravity="center"
+					android:maxLength="2"
+					android:textColor="@android:color/white"
+					android:textSize="24dip" />
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:layout_weight="1"
+				android:orientation="horizontal">
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center"
+					android:layout_weight="1"
+					android:gravity="center"
+					android:text="Min"
+					android:textColor="@android:color/white"
+					android:textSize="24dip"
+					android:textStyle="bold" />
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center"
+					android:layout_weight="1"
+					android:gravity="center"
+					android:text="      "
+					android:textSize="24dip"
+					android:textStyle="bold" />
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center"
+					android:layout_weight="1"
+					android:gravity="center"
+					android:text="Sec"
+					android:textColor="@android:color/white"
+					android:textSize="24dip"
+					android:textStyle="bold" />
+			</LinearLayout>
+		</LinearLayout>
+
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:layout_weight="1"
+			android:orientation="vertical">
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:gravity="center"
+				android:paddingTop="5dip"
+				android:paddingBottom="5dip"
+				android:text="Repeat"
+				android:textColor="@android:color/white"
+				android:textSize="24dip"
+				android:textStyle="bold" />
+
+			<EditText
+				android:id="@+id/repeat"
+				android:layout_width="80dip"
+				android:layout_height="60dip"
+				android:layout_gravity="center"
+				android:digits="1234567890"
+				android:gravity="center"
+				android:maxLength="4"
+				android:textColor="@android:color/white"
+				android:textSize="24dip" />
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:gravity="center"
+				android:text="times"
+				android:textColor="@android:color/white"
+				android:textSize="24dip"
+				android:textStyle="bold" />
+		</LinearLayout>
+	</LinearLayout>
+
+	<LinearLayout android:orientation="vertical"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:padding="5dip" android:gravity="center" android:id="@+id/bottom"
+		android:layout_weight=".7">
+		<LinearLayout android:orientation="horizontal"
+			android:layout_width="fill_parent" android:layout_height="wrap_content"
+			android:id="@+id/counters" android:padding="5dip" android:gravity="center">
+			<LinearLayout android:orientation="horizontal"
+				android:layout_width="fill_parent" android:layout_height="fill_parent"
+				android:layout_weight="2">
+
+				<Chronometer
+					android:id="@+id/chronometer"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center"
+					android:layout_weight="2"
+					android:background="@android:color/black"
+					android:gravity="center"
+					android:textSize="38dip"
+					android:textStyle="bold" />
+
+				<TextView
+					android:id="@+id/count"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center"
+					android:layout_weight="1"
+					android:background="@android:color/black"
+					android:gravity="center"
+					android:textSize="38dip"
+					android:textStyle="bold" />
+			</LinearLayout>
+		</LinearLayout>
+
+		<LinearLayout
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:layout_weight="1"
+			android:background="@android:color/black"
+			android:orientation="horizontal">
+
+			<android.widget.Button
+				android:id="@+id/btnStart"
+				android:layout_width="match_parent"
+				android:layout_height="70dip"
+				android:layout_gravity="center"
+				android:layout_marginHorizontal="2dip"
+				android:layout_weight="1"
+				android:background="#808080"
+				android:focusable="true"
+				android:focusableInTouchMode="false"
+				android:gravity="center"
+				android:text="@string/start"
+				android:textAllCaps="false"
+				android:textColor="@android:color/white"
+				android:textSize="24dip" />
+
+			<android.widget.Button
+				android:id="@+id/btnResume"
+				android:layout_width="match_parent"
+				android:layout_height="70dip"
+				android:layout_gravity="center"
+				android:layout_marginHorizontal="2dip"
+				android:layout_weight="1"
+				android:background="#808080"
+				android:focusable="true"
+				android:focusableInTouchMode="false"
+				android:gravity="center"
+				android:text="@string/pause"
+				android:textAllCaps="false"
+				android:textColor="@android:color/white"
+				android:textSize="24dip" />
+		</LinearLayout>
+	</LinearLayout>
+	<FrameLayout
+        android:id="@+id/keyboardFragment"
+        android:layout_width="fill_parent"
+        android:layout_weight="0.7"
+        android:layout_height="wrap_content"
+         />
+</LinearLayout>

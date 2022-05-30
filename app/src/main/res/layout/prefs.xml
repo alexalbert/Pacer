@@ -1,0 +1,21 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+	<PreferenceCategory android:title="Alert settings">
+		<CheckBoxPreference android:key="voice" android:defaultValue="true"
+			android:title="Voice" android:summary="Say a sequence number on alert" />
+		<CheckBoxPreference android:key="ringtone"
+			android:title="Ringtone" android:summary="Play a ringtone on alert" />
+		<RingtonePreference android:key="ringtoneName" android:ringtoneType="all"
+			android:title="Select a ringtone" android:showDefault="true" android:dependency="ringtone"
+			android:showSilent="true" android:summary="Select a ringtone" />
+		<CheckBoxPreference android:key="vibrate"
+			android:title="Vibrate" android:summary="Vibrate on alert" />
+	</PreferenceCategory>
+	<PreferenceCategory android:title="Call settings">
+		<CheckBoxPreference android:key="call"
+			android:title="Pause on phone call" android:summary="Pause counting while in call" />
+	</PreferenceCategory>
+	<PreferenceCategory android:title="Screen settings">
+		<CheckBoxPreference android:key="screen"
+			android:title="Keep screen on" android:summary="Prevent the screen from going to sleep" />
+	</PreferenceCategory>
+</PreferenceScreen>
