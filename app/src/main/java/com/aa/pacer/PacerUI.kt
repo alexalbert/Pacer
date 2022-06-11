@@ -1,17 +1,15 @@
 package com.aa.pacer
 
+import android.Manifest.permission.VIBRATE
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.*
 import android.graphics.Color
 import android.media.RingtoneManager
 import android.net.Uri
-import android.os.Bundle
-import android.os.Handler
-import android.os.IBinder
-import android.os.RemoteException
-import android.os.SystemClock
+import android.os.*
 import android.preference.PreferenceManager
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
@@ -23,8 +21,11 @@ import android.widget.Chronometer
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.startActivity
+import androidx.core.content.PackageManagerCompat.LOG_TAG
 
-class PacerUI : Activity() {
+class PacerUI : Activity()  {
 
     private var mResuming: Boolean = false
 
@@ -116,18 +117,26 @@ class PacerUI : Activity() {
 
     private val mConnection = object : ServiceConnection {
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            Log.i(LOG_TAG, "onServiceConnected")
+
             try {
                 mService = IPacerService.Stub.asInterface(service)
+                Log.i(LOG_TAG, "onServiceConnected1")
                 mService!!.setCallback(mBinder)
+                Log.i(LOG_TAG, "onServiceConnected2")
+
 
                 mHandler.sendEmptyMessage(H_ON_SERVICE_CONNECTED)
+                Log.i(LOG_TAG, "onServiceConnected3")
             } catch (e: RemoteException) {
+                Log.i(LOG_TAG, "onServiceConnected ex")
                 e.printStackTrace()
             }
 
         }
 
         override fun onServiceDisconnected(className: ComponentName) {
+            Log.i(LOG_TAG, "onServiceDisconnected")
             mService = null
         }
     }
@@ -164,6 +173,10 @@ class PacerUI : Activity() {
         val state: Int
         try {
             state = mService!!.state
+            Log.i(LOG_TAG, "In handleServiceConnect mService " + mService)
+            Log.i(LOG_TAG, "In handleServiceConnect mService state " + mService?.state)
+            Log.i(LOG_TAG, "In handleServiceConnect resuming " + mResuming)
+
             if (mResuming) {
                 mResuming = false
                 when (state) {
@@ -207,6 +220,8 @@ class PacerUI : Activity() {
     }
 
     private fun setService() {
+        Log.i(LOG_TAG, "setService")
+
         updateFromSettings()
         if (mService != null) {
             try {
@@ -224,6 +239,7 @@ class PacerUI : Activity() {
 
     /** Called when the activity is first created.  */
     public override fun onCreate(savedInstanceState: Bundle?) {
+        Log.i(LOG_TAG, "onCreate")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main)
 
@@ -352,7 +368,13 @@ class PacerUI : Activity() {
                     mTimes = Integer.parseInt(repeat)
 
                     startService(mServiceIntent)
+
+                    mResuming = false
+
                     bindService(mServiceIntent, mConnection, 0)
+//
+//                    bindService(Intent("com.aa.pacer").setPackage("com.aa.pacer.PacerService")
+//                        ,this,BIND_AUTO_CREATE);
 
                     acquireScreenLock()
                 } else {
@@ -439,18 +461,23 @@ class PacerUI : Activity() {
 
     public override fun onResume() {
         super.onResume()
+        Log.i(LOG_TAG, "onResume")
 
         updateFromSettings()
 
         mResuming = true
-//        startService(mServiceIntent)
+//        Handler(Looper.getMainLooper()).postDelayed({
+        mServiceIntent = Intent(this, PacerService::class.java)
+
+        startService(mServiceIntent)
         bindService(mServiceIntent, mConnection, 0)
+
+//        }, 100)
     }
 
     public override fun onRestart() {
+        Log.i(LOG_TAG, "onRestart")
         super.onRestart()
-        startService(mServiceIntent)
-//        bindService(mServiceIntent, mConnection, 0)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -460,11 +487,14 @@ class PacerUI : Activity() {
     }
 
     public override fun onPause() {
+        Log.i(LOG_TAG, "onPause")
+
         super.onPause()
         if (mService != null) {
             try {
                 mService!!.setCallback(null)
                 unbindService(mConnection)
+                Log.i(LOG_TAG, "unbindConnection")
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -474,6 +504,12 @@ class PacerUI : Activity() {
     }
 
     override fun onStop() {
+        Log.i(LOG_TAG, "onStop")
+
+        if (mConnection != null) {
+            unbindService(mConnection);
+        }
+
         val prefs = getPreferences(Context.MODE_PRIVATE)
         if (prefs != null) {
             val editor = prefs.edit()
@@ -485,6 +521,8 @@ class PacerUI : Activity() {
     }
 
     public override fun onDestroy() {
+        Log.i(LOG_TAG, "onDestroy")
+
         super.onDestroy()
     }
 
@@ -534,7 +572,8 @@ class PacerUI : Activity() {
     fun removeKeyboard() {
         val ft = fragmentManager.beginTransaction()
         ft.remove(mKeyboardFragment)
-        ft.commit()
+        ft.
+        commit()
 
         mBottom.visibility = View.VISIBLE
         mBtnStart.requestFocus()
@@ -542,7 +581,7 @@ class PacerUI : Activity() {
     }
 
     companion object {
-        val LOG_TAG = "Pacer"
+        val LOG_TAG = "Pacer1"
 
         val H_ACTION_SERVICE_CALLBACK_TICK = 11
         val H_ACTION_SERVICE_CALLBACK_FINISH = 12

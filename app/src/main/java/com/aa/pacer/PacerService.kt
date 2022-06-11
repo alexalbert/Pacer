@@ -16,6 +16,8 @@ import android.speech.tts.TextToSpeech
 import android.speech.tts.TextToSpeech.OnInitListener
 import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
+import android.util.Log
+import com.aa.pacer.PacerUI.Companion.LOG_TAG
 
 class PacerService : Service() {
 
@@ -113,6 +115,8 @@ class PacerService : Service() {
         @Synchronized
         @Throws(RemoteException::class)
         override fun getLastCount(): Long {
+            Log.i(LOG_TAG, "Service: Binder getLastCount")
+
             return mCount
         }
 
@@ -239,6 +243,8 @@ class PacerService : Service() {
     }
 
     private fun stopService() {
+        Log.i(LOG_TAG, "Service: onStopService")
+
         mHandler.removeCallbacks(mTickRun)
         try {
             mState = Const.STATE_IDLE
@@ -263,6 +269,7 @@ class PacerService : Service() {
     }
 
     override fun onCreate() {
+        Log.i(LOG_TAG, "Service: onCreate")
         super.onCreate()
         val pm = getSystemService(Context.POWER_SERVICE) as PowerManager
         mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Pacer:myWakeLockTag")
@@ -270,6 +277,7 @@ class PacerService : Service() {
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+        Log.i(LOG_TAG, "Service: onStartCommand")
         when (intent.getIntExtra(NOTIFICATION_EXTRA_ID, -1)) {
             NOTIFICATION_PAUSE -> pauseCountingAndNotifyUI()
             NOTIFICATION_RESUME -> resumeCountingAndNotifyUI()
@@ -280,6 +288,8 @@ class PacerService : Service() {
     }
 
     override fun onDestroy() {
+        Log.i(LOG_TAG, "Service: Destroy")
+
         if (mWakeLock!!.isHeld) {
             mWakeLock!!.release()
         }
@@ -292,6 +302,8 @@ class PacerService : Service() {
     }
 
     override fun onBind(arg0: Intent): IBinder? {
+        Log.i(LOG_TAG, "Service: onBind")
+
         return mBinder
     }
 
