@@ -10,7 +10,8 @@
 			<LinearLayout android:orientation="horizontal"
 				android:layout_width="fill_parent" android:layout_height="fill_parent">
 				<ImageView android:layout_width="wrap_content"
-					android:layout_height="wrap_content" android:src="@drawable/ic_baseline_self_improvement_24"
+					android:layout_height="wrap_content"
+					android:src="@mipmap/ic_launcher_drum"
 					android:layout_weight="1" android:layout_gravity="center" />
 				<LinearLayout android:orientation="vertical"
 					android:layout_width="wrap_content" android:layout_height="wrap_content"
