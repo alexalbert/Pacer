@@ -506,7 +506,7 @@ class PacerUI : Activity()  {
     override fun onStop() {
         Log.i(LOG_TAG, "onStop")
 
-        if (mService != null) {
+        if (mConnection != null) {
             unbindService(mConnection);
         }
 
