@@ -35,6 +35,7 @@ class PacerService : Service() {
     private var mVibrationEffect: VibrationEffect? = null
     private var mTts: TextToSpeech? = null
     private  val mService = this
+    private val mHandler = object : Handler(mService.mainLooper) {}
 
     private var mTelephonyManager: TelephonyManager? = null
 
@@ -418,10 +419,6 @@ class PacerService : Service() {
         val NOTIFICATION_STOP = 993
 
         var mIsRunning: Boolean = false
-
-        private val mHandler = object : Handler() {
-
-        }
 
         internal fun removeNotification(context: Context) {
             val nm = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
