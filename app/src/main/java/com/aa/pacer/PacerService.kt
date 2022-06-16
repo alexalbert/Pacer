@@ -6,15 +6,10 @@ import android.content.Intent
 import android.graphics.drawable.Icon
 import android.media.Ringtone
 import android.media.RingtoneManager
-import android.os.Handler
-import android.os.IBinder
-import android.os.PowerManager
-import android.os.RemoteException
-import android.os.SystemClock
-import android.os.Vibrator
+import android.os.*
 import android.speech.tts.TextToSpeech
 import android.speech.tts.TextToSpeech.OnInitListener
-import android.telephony.PhoneStateListener
+import android.telephony.TelephonyCallback
 import android.telephony.TelephonyManager
 import android.util.Log
 import com.aa.pacer.PacerUI.Companion.LOG_TAG
@@ -37,7 +32,9 @@ class PacerService : Service() {
     private var mWakeLock: PowerManager.WakeLock? = null
     private val mSync = Any()
     private var mVibrator: Vibrator? = null
+    private var mVibrationEffect: VibrationEffect? = null
     private var mTts: TextToSpeech? = null
+    private  val mService = this
 
     private var mTelephonyManager: TelephonyManager? = null
 
@@ -71,9 +68,10 @@ class PacerService : Service() {
 
             if (mPlayVibrate) {
                 if (mVibrator == null) {
-                    mVibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                    mVibrator = (getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager).defaultVibrator
+                    mVibrationEffect = VibrationEffect.createOneShot(200, 10)
                 }
-                mVibrator!!.vibrate(1000)
+                mVibrator!!.vibrate(mVibrationEffect)
             }
             if (mPlayRingtone) {
                 synchronized(mSync) {
@@ -101,8 +99,8 @@ class PacerService : Service() {
         }
     }
 
-    internal var mTelephonListener: PhoneStateListener = object : PhoneStateListener() {
-        override fun onCallStateChanged(state: Int, incomingNumber: String) {
+    internal var mTelephonListener: TelephonyCallback = object : TelephonyCallback(), TelephonyCallback.CallStateListener {
+        override fun onCallStateChanged(state: Int) {
             when (state) {
                 TelephonyManager.CALL_STATE_IDLE -> resumeCountingAndNotifyUI()
                 TelephonyManager.CALL_STATE_OFFHOOK, TelephonyManager.CALL_STATE_RINGING -> pauseCountingAndNotifyUI()
@@ -178,7 +176,9 @@ class PacerService : Service() {
 
             if (mPauseOnCall) {
                 mTelephonyManager = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-                if (mTelephonyManager != null) mTelephonyManager!!.listen(mTelephonListener, PhoneStateListener.LISTEN_CALL_STATE)
+                if (mTelephonyManager != null) mTelephonyManager!!.registerTelephonyCallback(
+                    mService.mainExecutor,
+                    mTelephonListener)
             }
         }
 
@@ -294,7 +294,7 @@ class PacerService : Service() {
             mWakeLock!!.release()
         }
 
-        if (mTelephonyManager != null) mTelephonyManager!!.listen(mTelephonListener, PhoneStateListener.LISTEN_NONE)
+        if (mTelephonyManager != null) mTelephonyManager!!.unregisterTelephonyCallback(mTelephonListener)
 
         removeNotification(this@PacerService)
 
