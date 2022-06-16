@@ -151,7 +151,6 @@ class PacerService : Service() {
         override fun start(
                 interval: Long,
                 maxCount: Long) {
-            var maxCount = maxCount
             if (mState != Const.STATE_IDLE) {
                 return
             }
@@ -167,9 +166,6 @@ class PacerService : Service() {
 
             mInterval = interval
             mMaxCount = maxCount
-            if (maxCount <= 0) {
-                maxCount = 1000
-            }
             mLastTickTime = SystemClock.elapsedRealtime()
             mCount = 0
             mHandler.postDelayed(mTickRun, mInterval)
