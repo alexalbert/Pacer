@@ -34,8 +34,8 @@ class PacerService : Service() {
     private var mVibrator: Vibrator? = null
     private var mVibrationEffect: VibrationEffect? = null
     private var mTts: TextToSpeech? = null
-    private  val mService = this
-    private val mHandler = object : Handler(mService.mainLooper) {}
+    private lateinit var mService: PacerService
+    private lateinit var mHandler: Handler
 
     private var mTelephonyManager: TelephonyManager? = null
 
@@ -268,6 +268,8 @@ class PacerService : Service() {
     override fun onCreate() {
         Log.i(LOG_TAG, "Service: onCreate")
         super.onCreate()
+        mService = this
+        mHandler = object : Handler(mService.mainLooper) {}
         val pm = getSystemService(Context.POWER_SERVICE) as PowerManager
         mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Pacer:myWakeLockTag")
         mWakeLock!!.acquire()
