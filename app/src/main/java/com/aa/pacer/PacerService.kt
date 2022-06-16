@@ -345,7 +345,7 @@ class PacerService : Service() {
 
 
     private fun sayText(text: String) {
-        if (mTts != null) mTts!!.speak(text, TextToSpeech.QUEUE_ADD, null)
+        if (mTts != null) mTts!!.speak(text, TextToSpeech.QUEUE_ADD, null, text)
     }
 
 
