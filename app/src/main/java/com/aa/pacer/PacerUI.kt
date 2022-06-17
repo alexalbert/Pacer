@@ -1,6 +1,5 @@
 package com.aa.pacer
 
-import android.Manifest.permission.VIBRATE
 import android.annotation.SuppressLint
 import android.content.*
 import android.graphics.Color
@@ -20,8 +19,6 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.startActivity
-import androidx.core.content.PackageManagerCompat.LOG_TAG
 import androidx.preference.PreferenceManager
 
 class PacerUI : AppCompatActivity()  {
@@ -47,8 +44,6 @@ class PacerUI : AppCompatActivity()  {
     private var mPlayRingtone: Boolean = false
     private var mPlayVibrate: Boolean = false
     private var mPauseOnCall: Boolean = false
-
-    private var mSettingsChanged: Boolean = false
 
     lateinit var mBottom: View
     lateinit var mCounters: View
@@ -189,7 +184,7 @@ class PacerUI : AppCompatActivity()  {
                     }
                     Const.STATE_PAUSED -> {
                         acquireScreenLock()
-                        mCountText.text = java.lang.Long.toString(mService!!.lastCount)
+                        mCountText.text = mService!!.lastCount.toString()
                         resetControlsOnPause()
                     }
                 }
@@ -368,10 +363,6 @@ class PacerUI : AppCompatActivity()  {
                     mResuming = false
 
                     bindService(mServiceIntent, mConnection, 0)
-//
-//                    bindService(Intent("com.aa.pacer").setPackage("com.aa.pacer.PacerService")
-//                        ,this,BIND_AUTO_CREATE);
-
                     acquireScreenLock()
                 } else {
                     try {
@@ -461,13 +452,10 @@ class PacerUI : AppCompatActivity()  {
         updateFromSettings()
 
         mResuming = true
-//        Handler(Looper.getMainLooper()).postDelayed({
         mServiceIntent = Intent(this, PacerService::class.java)
 
         startService(mServiceIntent)
         bindService(mServiceIntent, mConnection, 0)
-
-//        }, 100)
     }
 
     public override fun onRestart() {
@@ -580,7 +568,6 @@ class PacerUI : AppCompatActivity()  {
         val H_ACTION_SERVICE_CALLBACK_FINISH = 12
         val H_ACTION_SERVICE_CALLBACK_PAUSE = 13
         val H_ACTION_SERVICE_CALLBACK_RESUME = 14
-        val H_ACTION_SERVICE_CALLBACK_STATE = 15
 
         val H_ON_SERVICE_CONNECTED = 21
 

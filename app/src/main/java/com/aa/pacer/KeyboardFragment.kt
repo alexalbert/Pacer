@@ -1,13 +1,14 @@
 package com.aa.pacer
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.widget.TextView
-import android.widget.EditText
 import android.os.Bundle
 import android.view.*
 import android.view.View.OnTouchListener
 import androidx.fragment.app.Fragment
 
+@SuppressLint("ClickableViewAccessibility")
 class KeyboardFragment : Fragment() {
     var mK0: TextView? = null
     var mK1: TextView? = null
@@ -21,7 +22,7 @@ class KeyboardFragment : Fragment() {
     var mK9: TextView? = null
     var mClear: TextView? = null
     var mDone: TextView? = null
-    var mCurrentEdit: EditText? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
