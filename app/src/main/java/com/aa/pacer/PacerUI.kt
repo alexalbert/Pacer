@@ -106,9 +106,6 @@ class PacerUI : AppCompatActivity()  {
 
                 H_ACTION_MENU_SETTINGS -> startActivity(Intent(this@PacerUI, SettingsActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS))
 
-                H_ACTION_MENU_ABOUT -> AboutDlg(this@PacerUI).show()
-
-
                 H_ON_SERVICE_CONNECTED -> handleServiceConnect()
             }
         }
@@ -533,11 +530,8 @@ class PacerUI : AppCompatActivity()  {
         super.onCreateOptionsMenu(menu)
 
         val settings = menu.add(Menu.NONE, H_ACTION_MENU_SETTINGS, Menu.NONE, "Settings")
-        val about = menu.add(Menu.NONE, H_ACTION_MENU_ABOUT, Menu.NONE, "About")
         settings.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-        about.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
         settings.setIcon(android.R.drawable.ic_menu_preferences)
-        about.setIcon(android.R.drawable.ic_menu_info_details)
         return true
     }
 
@@ -591,8 +585,6 @@ class PacerUI : AppCompatActivity()  {
         val H_ON_SERVICE_CONNECTED = 21
 
         val H_ACTION_MENU_SETTINGS = 211
-        val H_ACTION_MENU_ABOUT = 212
-
 
         // Saved state ids
         val INTERVAL = "interval"
