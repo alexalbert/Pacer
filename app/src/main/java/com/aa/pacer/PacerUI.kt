@@ -386,9 +386,8 @@ class PacerUI : Activity()  {
                         e.printStackTrace()
                     }
 
-                    if (mConnection != null) {
-                        unbindService(mConnection)
-                    }
+                    unbindService(mConnection)
+
                     mService = null
                     stopService(mServiceIntent)
 
@@ -506,9 +505,7 @@ class PacerUI : Activity()  {
     override fun onStop() {
         Log.i(LOG_TAG, "onStop")
 
-        if (mConnection != null) {
-            unbindService(mConnection);
-        }
+        unbindService(mConnection);
 
         val prefs = getPreferences(Context.MODE_PRIVATE)
         if (prefs != null) {
