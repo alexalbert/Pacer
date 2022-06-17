@@ -67,7 +67,7 @@ class PacerUI : Activity()  {
     lateinit var toast: Toast
 
     @SuppressLint("HandlerLeak")
-    private var mHandler: Handler = object : Handler() {
+    private var mHandler: Handler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: android.os.Message) {
             when (msg.what) {
                 H_ACTION_SERVICE_CALLBACK_TICK -> if (mService != null) {
@@ -165,8 +165,8 @@ class PacerUI : Activity()  {
 
     private val isPortrait: Boolean
         get() {
-            val rotation = window.windowManager.defaultDisplay.rotation
-            return rotation == 0 || rotation == 180
+            val rotation = display?.rotation
+            return rotation == null || rotation == 0 || rotation == 180
         }
 
     private fun handleServiceConnect() {
