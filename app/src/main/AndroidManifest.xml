@@ -26,6 +26,7 @@
 	    <service android:name="com.aa.pacer.PacerService" android:process=":remote"
             android:exported="false">
 <!--	        <intent-filter>-->
+<!--	        <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->
 <!--            </intent-filter>-->
 	    </service>

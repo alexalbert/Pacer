@@ -19,8 +19,11 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.preference.PreferenceManager
+import  com.aa.pacer.databinding.MainBinding
 
+@SuppressLint("ClickableViewAccessibility")
 class PacerUI : AppCompatActivity()  {
 
     private var mResuming: Boolean = false
@@ -228,18 +231,23 @@ class PacerUI : AppCompatActivity()  {
         }
     }
 
+    private lateinit var binding: MainBinding
+
     /** Called when the activity is first created.  */
     public override fun onCreate(savedInstanceState: Bundle?) {
         Log.i(LOG_TAG, "onCreate")
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main)
 
-        mMinutes = findViewById<View>(R.id.minutes) as EditText
-        mSeconds = findViewById<View>(R.id.seconds) as EditText
-        mRepeat = findViewById<View>(R.id.repeat) as EditText
-        mBottom = findViewById(R.id.bottom)
-        mCounters = findViewById(R.id.counters)
-        mMain = findViewById(R.id.main)
+        binding = MainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+
+        mMinutes = binding.minutes
+        mSeconds = binding.seconds
+        mRepeat = binding.repeat
+        mBottom = binding.bottom
+        mCounters = binding.counters
+        mMain = binding.main
 
         mMinutes.inputType = 0
         mSeconds.inputType = 0
@@ -300,13 +308,13 @@ class PacerUI : AppCompatActivity()  {
 
         mServiceIntent = Intent(this, PacerService::class.java)
 
-        mBtnStart = findViewById<View>(R.id.btnStart) as Button
-        mBtnResume = findViewById<View>(R.id.btnResume) as Button
-        mCountText = findViewById<View>(R.id.count) as TextView
+        mBtnStart = binding.btnStart
+        mBtnResume = binding.btnResume
+        mCountText = binding.count
 
         mBtnResume.visibility = View.GONE
 
-        mChronometer = findViewById<View>(R.id.chronometer) as Chronometer
+        mChronometer =binding.chronometer
         mChronometer.setTextColor(Color.BLUE)
         mChronometer.text = ""
         mCountText.setTextColor(Color.RED)
