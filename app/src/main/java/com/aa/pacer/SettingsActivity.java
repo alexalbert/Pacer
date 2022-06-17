@@ -1,9 +1,10 @@
 package com.aa.pacer;
 
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
 
-public class SettingsActivity extends PreferenceActivity 
+import androidx.appcompat.app.AppCompatActivity;
+
+public class SettingsActivity extends AppCompatActivity
 {
     @Override
     public void onCreate(Bundle savedInstanceState) 
@@ -11,7 +12,7 @@ public class SettingsActivity extends PreferenceActivity
         super.onCreate(savedInstanceState);
 
         // Display the fragment as the main content.
-        getFragmentManager().beginTransaction()
+        getSupportFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new SettingsFragment())
                 .commit();    
     }

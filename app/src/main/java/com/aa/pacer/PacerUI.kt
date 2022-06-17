@@ -504,7 +504,10 @@ class PacerUI : AppCompatActivity()  {
     override fun onStop() {
         Log.i(LOG_TAG, "onStop")
 
-        unbindService(mConnection);
+
+        try {
+            unbindService(mConnection);
+        } catch(e: Exception) {}
 
         val prefs = getPreferences(Context.MODE_PRIVATE)
         if (prefs != null) {
