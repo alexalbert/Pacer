@@ -8,7 +8,6 @@ import android.graphics.Color
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.*
-import android.preference.PreferenceManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -24,6 +23,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.PackageManagerCompat.LOG_TAG
+import androidx.preference.PreferenceManager
 
 class PacerUI : Activity()  {
 
