@@ -3,25 +3,17 @@ package com.aa.pacer
 import android.annotation.SuppressLint
 import android.content.*
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.*
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
-import android.view.MotionEvent
-import android.view.View
+import android.view.*
 import android.view.View.OnTouchListener
-import android.view.WindowManager
-import android.widget.Button
-import android.widget.Chronometer
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.preference.PreferenceManager
-import  com.aa.pacer.databinding.MainBinding
+import com.aa.pacer.databinding.MainBinding
 
 @SuppressLint("ClickableViewAccessibility")
 class PacerUI : AppCompatActivity()  {
@@ -241,6 +233,22 @@ class PacerUI : AppCompatActivity()  {
         binding = MainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+        val toolbar = binding.toolbar
+        toolbar.background = ColorDrawable(Color.BLACK)
+        setSupportActionBar(toolbar)
+
+//        https://stackoverflow.com/questions/26579230/how-to-add-delete-item-option-to-spinner-dropdown-list
+
+
+        val aList = ArrayList<String?>()
+        aList.add("--Select--")
+        aList.add("Md. Shahadat Sarker")
+        aList.add("Developer")
+        aList.add("ErrrorPoint")
+
+        binding.spinner.setAdapter(MySpinnerAdapter(this, R.layout.spinner_row, R.id.spnItemName, aList, aList))
+
 
         mMinutes = binding.minutes
         mSeconds = binding.seconds

@@ -1,9 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent" android:id="@+id/main"
 	android:background="@android:color/black"
 	android:weightSum="1.0">
+
+
+	<androidx.appcompat.widget.Toolbar
+		android:id="@+id/toolbar"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_weight="0.03"
+		android:background="?attr/colorPrimary"
+		android:minHeight="?attr/actionBarSize"
+		android:theme="?attr/actionBarTheme" >
+
+		<Spinner
+			android:id="@+id/spinner"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_horizontal"
+			android:layout_weight="0.03"
+			android:background="@color/design_default_color_background"
+			android:entries="@android:array/phoneTypes" />
+
+	</androidx.appcompat.widget.Toolbar>
+
 
 	<LinearLayout
 		android:layout_width="fill_parent"
@@ -231,4 +254,5 @@
         android:layout_weight="0.7"
         android:layout_height="wrap_content"
          />
+
 </LinearLayout>
