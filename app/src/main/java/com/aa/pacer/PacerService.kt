@@ -70,7 +70,7 @@ class PacerService : Service() {
             if (mPlayVibrate) {
                 if (mVibrator == null) {
                     mVibrator = (getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager).defaultVibrator
-                    mVibrationEffect = VibrationEffect.createOneShot(200, 10)
+                    mVibrationEffect = VibrationEffect.createOneShot(200, 255)
                 }
                 mVibrator!!.vibrate(mVibrationEffect)
             }
