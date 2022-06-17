@@ -1,19 +1,16 @@
-package com.aa.pacer;
+package com.aa.pacer
 
-import android.os.Bundle;
+import android.R
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
 
-import androidx.appcompat.app.AppCompatActivity;
-
-public class SettingsActivity extends AppCompatActivity
-{
-    @Override
-    public void onCreate(Bundle savedInstanceState) 
-    {
-        super.onCreate(savedInstanceState);
+class SettingsActivity : AppCompatActivity() {
+    public override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         // Display the fragment as the main content.
-        getSupportFragmentManager().beginTransaction()
-                .replace(android.R.id.content, new SettingsFragment())
-                .commit();    
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.content, SettingsFragment())
+            .commit()
     }
 }
