@@ -1,6 +1,6 @@
 package com.aa.pacer;
 
-import android.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;

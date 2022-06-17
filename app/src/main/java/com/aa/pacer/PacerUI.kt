@@ -2,7 +2,6 @@ package com.aa.pacer
 
 import android.Manifest.permission.VIBRATE
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.*
 import android.graphics.Color
 import android.media.RingtoneManager
@@ -25,7 +24,7 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.PackageManagerCompat.LOG_TAG
 import androidx.preference.PreferenceManager
 
-class PacerUI : Activity()  {
+class PacerUI : AppCompatActivity()  {
 
     private var mResuming: Boolean = false
 
@@ -276,7 +275,7 @@ class PacerUI : Activity()  {
 
         mMain.setOnTouchListener { v, event ->
             if (mKeyboardFragment.view != null) {
-                val fragmentTop = (mKeyboardFragment.view!!.parent as View).top
+                val fragmentTop = (mKeyboardFragment.requireView().parent as View).top
 
                 if (v != mMinutes && v != mSeconds && v != mRepeat && event.y < fragmentTop) {
                     removeKeyboard()
@@ -291,8 +290,8 @@ class PacerUI : Activity()  {
             if (isPortrait) {
                 mCurrentEdit = v as EditText
 
-                val ft = fragmentManager.beginTransaction()
-                val f = fragmentManager.findFragmentById(R.id.keyboardFragment)
+                val ft =  supportFragmentManager.beginTransaction()
+                val f = supportFragmentManager.findFragmentById(R.id.keyboardFragment)
                 if (f == null || !f.isAdded && !f.isVisible) {
                     ft.add(R.id.keyboardFragment, mKeyboardFragment)
                     ft.commit()
@@ -567,7 +566,7 @@ class PacerUI : Activity()  {
     }
 
     fun removeKeyboard() {
-        val ft = fragmentManager.beginTransaction()
+        val ft = supportFragmentManager.beginTransaction()
         ft.remove(mKeyboardFragment)
         ft.
         commit()
