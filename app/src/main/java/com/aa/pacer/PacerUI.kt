@@ -12,6 +12,7 @@ import android.view.*
 import android.view.View.OnTouchListener
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.PackageManagerCompat.LOG_TAG
 import androidx.preference.PreferenceManager
 import com.aa.pacer.databinding.MainBinding
 
@@ -48,6 +49,10 @@ class PacerUI : AppCompatActivity()  {
     lateinit var mSeconds: EditText
     lateinit var mRepeat: EditText
     lateinit var mCurrentEdit: EditText
+    lateinit var mAdd: Button
+    lateinit var mSpinner: Spinner
+
+    val mSchemas = Schemas()
 
     private var mKeyboardFragment = KeyboardFragment()
 
@@ -238,16 +243,7 @@ class PacerUI : AppCompatActivity()  {
         toolbar.background = ColorDrawable(Color.BLACK)
         setSupportActionBar(toolbar)
 
-//        https://stackoverflow.com/questions/26579230/how-to-add-delete-item-option-to-spinner-dropdown-list
-
-
-        val aList = ArrayList<String?>()
-        aList.add("--Select--")
-        aList.add("Md. Shahadat Sarker")
-        aList.add("Developer")
-        aList.add("ErrrorPoint")
-
-        binding.spinner.setAdapter(MySpinnerAdapter(this, R.layout.spinner_row, R.id.spnItemName, aList, aList))
+        binding.spinner.setAdapter(MySpinnerAdapter(this, R.layout.spinner_row, R.id.spnItemName, mSchemas.get(), mSchemas.get()))
 
 
         mMinutes = binding.minutes
@@ -256,21 +252,26 @@ class PacerUI : AppCompatActivity()  {
         mBottom = binding.bottom
         mCounters = binding.counters
         mMain = binding.main
+        mAdd = binding.add
+        mSpinner = binding.spinner
 
         mMinutes.inputType = 0
         mSeconds.inputType = 0
         mRepeat.inputType = 0
 
-        if (savedInstanceState != null) {
-            mInterval = savedInstanceState.getLong(INTERVAL)
-            mTimes = savedInstanceState.getInt(TIMES)
-        } else {
+//        if (savedInstanceState != null) {
+//            mInterval = savedInstanceState.getLong(INTERVAL)
+//            mTimes = savedInstanceState.getInt(TIMES)
+//            savedInstanceState.getStringArray(SCHEMAS))?.let { mSchemas.set(it) }
+//        } else {
             val prefs = getPreferences(Context.MODE_PRIVATE)
             if (prefs != null) {
                 mInterval = prefs.getLong(INTERVAL, 0)
                 mTimes = prefs.getInt(TIMES, 1000)
+                mSchemas.set(prefs.getStringSet(SCHEMAS, null))
+                (binding.spinner.adapter as MySpinnerAdapter).refresh()
             }
-        }
+//        }
 
         if (mInterval != 0L) {
             val min = mInterval / 1000 / 60
@@ -290,6 +291,36 @@ class PacerUI : AppCompatActivity()  {
                 }
             }
             false
+        }
+
+        mAdd.setOnClickListener { v ->
+            if (validateInput()) {
+                mSchemas.add(mMinutes.text.toString(), mSeconds.text.toString(), mRepeat.text.toString())
+                (binding.spinner.adapter as MySpinnerAdapter).refresh()
+            }
+ //           savePrefs()
+
+//            clearData()
+//            resetControlsOnAdd()
+//
+        }
+
+
+        mSpinner.onItemSelectedListener =  object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val set = mSchemas.get()
+                if (set != null && set.size > position && position >= 0) {
+                    val s = mSchemas.get()[position]
+                    var (minutes, seconds, repeat) = mSchemas.parse(s)
+                    mMinutes.setText(minutes)
+                    mSeconds.setText(seconds)
+                    mRepeat.setText(repeat)
+                }
+            }
         }
 
         val mEditTouchListener = OnTouchListener { v, event ->
@@ -351,28 +382,11 @@ class PacerUI : AppCompatActivity()  {
                 if (mBtnStart.text == resources.getString(R.string.start)) {
                     updateFromSettings()
 
-                    val min = mMinutes.text.toString()
-                    val sec = mSeconds.text.toString()
-                    val repeat = mRepeat.text.toString()
-
-                    mInterval = 0
-                    if (min.trim { it <= ' ' }.length > 0) {
-                        mInterval += (Integer.parseInt(min) * 60).toLong()
-                    }
-                    if (sec.trim { it <= ' ' }.length > 0) {
-                        mInterval += Integer.parseInt(sec).toLong()
-                    }
-                    mInterval *= 1000
-
-                    if (mInterval < 3000) {
-                        toast = Toast.makeText(this@PacerUI, "Please set at least 3 seconds interval", Toast.LENGTH_LONG)
-                        toast.show()
+                    if (!validateInput()) {
                         return@setOnClickListener
                     }
 
                     resetControlsOnStartOrResume()
-
-                    mTimes = Integer.parseInt(repeat)
 
                     startService(mServiceIntent)
 
@@ -423,6 +437,29 @@ class PacerUI : AppCompatActivity()  {
     }
 
 
+    private fun validateInput(): Boolean {
+        val min = mMinutes.text.toString()
+        val sec = mSeconds.text.toString()
+        val repeat = mRepeat.text.toString()
+
+        mInterval = 0
+        if (min.trim { it <= ' ' }.length > 0) {
+            mInterval += (Integer.parseInt(min) * 60).toLong()
+        }
+        if (sec.trim { it <= ' ' }.length > 0) {
+            mInterval += Integer.parseInt(sec).toLong()
+        }
+        mInterval *= 1000
+
+        if (mInterval < 3000) {
+            toast = Toast.makeText(this@PacerUI, "Please set at least 3 seconds interval", Toast.LENGTH_LONG)
+            toast.show()
+            return false
+        }
+        mTimes = Integer.parseInt(repeat)
+
+        return true
+    }
     private fun resetControlsOnStop() {
         mBtnStart.setText(R.string.start)
         mBtnResume.visibility = View.GONE
@@ -447,6 +484,20 @@ class PacerUI : AppCompatActivity()  {
         mBtnResume.visibility = View.VISIBLE
 
         mChronometer.stop()
+    }
+
+    private fun resetControlsOnAdd() {
+        mBtnStart.setText("Save")
+        mBtnResume.setText("Cancel")
+        mBtnResume.visibility = View.VISIBLE
+
+        mChronometer.stop()
+    }
+
+    private fun clearData() {
+        mMinutes.text.clear()
+        mSeconds.text.clear()
+        mRepeat.text.clear()
     }
 
     private fun acquireScreenLock() {
@@ -482,6 +533,7 @@ class PacerUI : AppCompatActivity()  {
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putLong(INTERVAL, mInterval)
         outState.putInt(TIMES, mTimes)
+        outState.putStringArrayList(SCHEMAS, mSchemas.get())
         super.onSaveInstanceState(outState)
     }
 
@@ -510,14 +562,20 @@ class PacerUI : AppCompatActivity()  {
             unbindService(mConnection);
         } catch(e: Exception) {}
 
+        savePrefs()
+
+        super.onStop()
+    }
+
+    private fun savePrefs() {
         val prefs = getPreferences(Context.MODE_PRIVATE)
         if (prefs != null) {
             val editor = prefs.edit()
             editor.putLong(INTERVAL, mInterval)
             editor.putInt(TIMES, mTimes)
+            editor.putStringSet(SCHEMAS, mSchemas.getAsMutableSet())
             editor.commit()
         }
-        super.onStop()
     }
 
     public override fun onDestroy() {
@@ -569,8 +627,7 @@ class PacerUI : AppCompatActivity()  {
     fun removeKeyboard() {
         val ft = supportFragmentManager.beginTransaction()
         ft.remove(mKeyboardFragment)
-        ft.
-        commit()
+        ft.commit()
 
         mBottom.visibility = View.VISIBLE
         mBtnStart.requestFocus()
@@ -592,6 +649,7 @@ class PacerUI : AppCompatActivity()  {
         // Saved state ids
         val INTERVAL = "interval"
         val TIMES = "times"
+        val SCHEMAS = "sets"
 
         // Prefernces ids
         val RINGTONE = "ringtone"

@@ -16,10 +16,11 @@ class MySpinnerAdapter(
     context: Context?,
     textViewResourceId: Int,
     textViewResourceId1: Int,
-    objects: ArrayList<String?>,
-    val iName: ArrayList<String?>
+    objects: ArrayList<String>,
+    val iName: ArrayList<String>
 ) : ArrayAdapter<String> (context!!, textViewResourceId, textViewResourceId1,
-    objects!!)
+    objects
+)
 {
     var spnItemDel:TextView? = null
 
@@ -32,7 +33,7 @@ class MySpinnerAdapter(
         return getCustomView(position, view, parent)
     }
 
-    fun getCustomView(position: Int, convertView: View?, parent: ViewGroup?): View {
+    private fun getCustomView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val inflater = (context as Activity).layoutInflater
         val binding = SpinnerRowBinding.inflate(inflater)
 
@@ -42,11 +43,14 @@ class MySpinnerAdapter(
         binding.spnItemDel!!.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT).show()
-                //iName[position] = null;
                 iName!!.removeAt(position)
                 notifyDataSetChanged()
             }
         })
         return binding.root
+    }
+
+    fun refresh() {
+        notifyDataSetChanged()
     }
 }

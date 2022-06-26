@@ -17,8 +17,9 @@
             android:layout_height="match_parent"
             android:layout_weight="9"
             android:text="Item Name"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:background="@color/ic_launcher_drum_background"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:background="@color/cardview_dark_background"
+            android:textColor="@color/cardview_light_background"
             android:textStyle="bold" />
 
         <TextView
@@ -27,8 +28,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="X"
-            android:background="@color/ic_launcher_drum_background"
-            android:textColor="@color/design_default_color_error"
+            android:background="@color/cardview_dark_background"
+            android:textColor="@color/material_dynamic_neutral90"
             android:textAppearance="?android:attr/textAppearanceSmall" />
     </LinearLayout>
 
