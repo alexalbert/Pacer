@@ -51,6 +51,7 @@ class PacerUI : AppCompatActivity()  {
     lateinit var mCurrentEdit: EditText
     lateinit var mAdd: Button
     lateinit var mSpinner: Spinner
+    lateinit var mSpinnerAdapter: MySpinnerAdapter
 
     val mSchemas = Schemas()
 
@@ -254,24 +255,19 @@ class PacerUI : AppCompatActivity()  {
         mMain = binding.main
         mAdd = binding.add
         mSpinner = binding.spinner
+        mSpinnerAdapter = mSpinner.adapter as MySpinnerAdapter
 
         mMinutes.inputType = 0
         mSeconds.inputType = 0
         mRepeat.inputType = 0
 
-//        if (savedInstanceState != null) {
-//            mInterval = savedInstanceState.getLong(INTERVAL)
-//            mTimes = savedInstanceState.getInt(TIMES)
-//            savedInstanceState.getStringArray(SCHEMAS))?.let { mSchemas.set(it) }
-//        } else {
-            val prefs = getPreferences(Context.MODE_PRIVATE)
-            if (prefs != null) {
-                mInterval = prefs.getLong(INTERVAL, 0)
-                mTimes = prefs.getInt(TIMES, 1000)
-                mSchemas.set(prefs.getStringSet(SCHEMAS, null))
-                (binding.spinner.adapter as MySpinnerAdapter).refresh()
-            }
-//        }
+        val prefs = getPreferences(Context.MODE_PRIVATE)
+        if (prefs != null) {
+            mInterval = prefs.getLong(INTERVAL, 0)
+            mTimes = prefs.getInt(TIMES, 1000)
+            mSchemas.set(prefs.getStringSet(SCHEMAS, null))
+            mSpinnerAdapter.refresh()
+        }
 
         if (mInterval != 0L) {
             val min = mInterval / 1000 / 60
@@ -296,13 +292,8 @@ class PacerUI : AppCompatActivity()  {
         mAdd.setOnClickListener { v ->
             if (validateInput()) {
                 mSchemas.add(mMinutes.text.toString(), mSeconds.text.toString(), mRepeat.text.toString())
-                (binding.spinner.adapter as MySpinnerAdapter).refresh()
+                mSpinnerAdapter.refresh()
             }
- //           savePrefs()
-
-//            clearData()
-//            resetControlsOnAdd()
-//
         }
 
 
@@ -530,12 +521,6 @@ class PacerUI : AppCompatActivity()  {
         super.onRestart()
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putLong(INTERVAL, mInterval)
-        outState.putInt(TIMES, mTimes)
-        outState.putStringArrayList(SCHEMAS, mSchemas.get())
-        super.onSaveInstanceState(outState)
-    }
 
     public override fun onPause() {
         Log.i(LOG_TAG, "onPause")

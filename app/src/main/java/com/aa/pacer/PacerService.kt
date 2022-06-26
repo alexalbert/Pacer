@@ -370,7 +370,7 @@ class PacerService : Service() {
         val nm = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         val builder = Notification.Builder(context, CHANNEL_ID)
-        builder.setSmallIcon(R.drawable.notification_icon)
+        builder.setSmallIcon(R.drawable.ic_launcher_drum_foreground)
         builder.setContentTitle("Pacer is " + (if (mState == Const.STATE_PAUSED) "paused at   " else "counting:   ") + mCount)
         builder.setContentText("Pacer is running")
         builder.setContentText("Touch to bring up.")
