@@ -1,7 +1,12 @@
 package com.aa.pacer
 
+import android.Manifest
 import android.annotation.SuppressLint
-import android.content.*
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.media.RingtoneManager
@@ -11,10 +16,12 @@ import android.util.Log
 import android.view.*
 import android.view.View.OnTouchListener
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.PackageManagerCompat.LOG_TAG
+import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import com.aa.pacer.databinding.MainBinding
+
 
 @SuppressLint("ClickableViewAccessibility")
 class PacerUI : AppCompatActivity()  {
@@ -215,19 +222,43 @@ class PacerUI : AppCompatActivity()  {
         Log.i(LOG_TAG, "setService")
 
         updateFromSettings()
-        if (mService != null) {
+
+         if (mService != null) {
             try {
                 mService!!.setRingtoneSound(mRingthonePosition, mRingthoneDuration)
                 mService!!.setVoice(mPlayVoice)
                 mService!!.setRingtone(mPlayRingtone)
                 mService!!.setVibrate(mPlayVibrate)
                 mService!!.setPauseOnCall(mPauseOnCall)
+
             } catch (e: RemoteException) {
                 e.printStackTrace()
             }
 
         }
     }
+
+    private fun checkTelephonyPermission() {
+        if (mPauseOnCall) {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.READ_PHONE_STATE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                requestPermissionLauncher.launch(
+                    Manifest.permission.READ_PHONE_STATE
+                )
+            }
+        }
+    }
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(RequestPermission()
+        ) { isGranted: Boolean ->
+            if (!isGranted) {
+               mPauseOnCall = false
+            }
+        }
 
     private lateinit var binding: MainBinding
 
