@@ -20,7 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SettingsActivity"
+        <activity android:name=".SettingsActivity" android:theme="@style/MyPreferencesTheme"
                   android:label="Preferences" android:screenOrientation="fullSensor">
         </activity>
 	    <service android:name="com.aa.pacer.PacerService" android:process=":remote"

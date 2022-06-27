@@ -16,4 +16,12 @@
     <!-- Define other styles to fix theme -->
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <color name="preferencesTextColor">#FFFFFF</color>
+    <color name="preferencesBackgroundColor">#202020</color>
+
+    <style name="MyPreferencesTheme" parent="Theme.AppCompat">
+        <item name="android:textColor">@color/preferencesTextColor</item>
+        <item name="android:windowBackground">@color/preferencesBackgroundColor</item>
+    </style>
 </resources>
