@@ -1,12 +1,12 @@
 package com.aa.pacer
 
-import android.R
 import android.app.Activity
 import android.content.Context
+import android.text.Selection.setSelection
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.ImageView
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import com.aa.pacer.databinding.SpinnerRowBinding
@@ -39,11 +39,11 @@ class MySpinnerAdapter(
 
         spnItemDel = binding.spnItemDel
 
-        binding.spnItemName!!.text = iName!![position] + ""
-        binding.spnItemDel!!.setOnClickListener(object : View.OnClickListener {
+        binding.spnItemName.text = iName[position] + ""
+        binding.spnItemDel.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT).show()
-                iName!!.removeAt(position)
+                iName.removeAt(position)
                 notifyDataSetChanged()
             }
         })
