@@ -1,6 +1,7 @@
 package com.aa.pacer
 
 import android.Manifest
+import android.Manifest.permission.VIBRATE
 import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Context
@@ -61,6 +62,8 @@ class PacerUI : AppCompatActivity()  {
     lateinit var mSpinnerAdapter: MySpinnerAdapter
 
     val mSchemas = Schemas()
+
+    private var mSchemaIndex: Int = 0
 
     private var mKeyboardFragment = KeyboardFragment()
 
@@ -223,6 +226,8 @@ class PacerUI : AppCompatActivity()  {
 
         updateFromSettings()
 
+        checkTelephonyPermission()
+
          if (mService != null) {
             try {
                 mService!!.setRingtoneSound(mRingthonePosition, mRingthoneDuration)
@@ -297,7 +302,9 @@ class PacerUI : AppCompatActivity()  {
             mInterval = prefs.getLong(INTERVAL, 0)
             mTimes = prefs.getInt(TIMES, 1000)
             mSchemas.set(prefs.getStringSet(SCHEMAS, null))
+            mSchemaIndex = prefs.getInt(SCHEMA_INDEX, 0)
             mSpinnerAdapter.refresh()
+            mSpinner.setSelection(mSchemaIndex)
         }
 
         if (mInterval != 0L) {
@@ -573,7 +580,6 @@ class PacerUI : AppCompatActivity()  {
     override fun onStop() {
         Log.i(LOG_TAG, "onStop")
 
-
         try {
             unbindService(mConnection);
         } catch(e: Exception) {}
@@ -590,6 +596,7 @@ class PacerUI : AppCompatActivity()  {
             editor.putLong(INTERVAL, mInterval)
             editor.putInt(TIMES, mTimes)
             editor.putStringSet(SCHEMAS, mSchemas.getAsMutableSet())
+            editor.putInt(SCHEMA_INDEX, mSpinner.selectedItemPosition)
             editor.commit()
         }
     }
@@ -663,16 +670,17 @@ class PacerUI : AppCompatActivity()  {
         val H_ACTION_MENU_SETTINGS = 211
 
         // Saved state ids
-        val INTERVAL = "interval"
-        val TIMES = "times"
-        val SCHEMAS = "sets"
+        const val INTERVAL = "interval"
+        const val TIMES = "times"
+        const val SCHEMAS = "sets"
+        const val SCHEMA_INDEX = "schema_index"
 
         // Prefernces ids
-        val RINGTONE = "ringtone"
-        val RINGTONE_NAME = "ringtoneName"
-        val SCREEN = "screen"
-        val CALL = "call"
-        val VOICE = "voice"
-        val VIBRATE = "vibrate"
+        const val RINGTONE = "ringtone"
+        const val RINGTONE_NAME = "ringtoneName"
+        const val SCREEN = "screen"
+        const val CALL = "call"
+        const val VOICE = "voice"
+        const val VIBRATE = "vibrate"
     }
 }
