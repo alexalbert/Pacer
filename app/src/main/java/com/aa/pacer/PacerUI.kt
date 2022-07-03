@@ -1,16 +1,15 @@
 package com.aa.pacer
 
 import android.Manifest
-import android.Manifest.permission.VIBRATE
 import android.annotation.SuppressLint
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
+import android.content.*
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.media.RingtoneManager
+import android.media.RingtoneManager.ID_COLUMN_INDEX
+import android.media.RingtoneManager.URI_COLUMN_INDEX
 import android.net.Uri
 import android.os.*
 import android.util.Log
@@ -638,14 +637,40 @@ class PacerUI : AppCompatActivity()  {
 
             try {
                 val rm = RingtoneManager(this)
-                rm.setType(RingtoneManager.TYPE_ALL)
-                mRingthonePosition = rm.getRingtonePosition(Uri.parse(rUri))
+                rm.setType(RingtoneManager.TYPE_NOTIFICATION)
+                mRingthonePosition = rm.getRingtonePositionMy(Uri.parse(rUri))
             } catch (e: Exception) {
                 mRingthonePosition = 5
             }
 
         }
     }
+
+    private fun RingtoneManager.getRingtonePositionMy(ringtoneUri: Uri?): Int {
+        try {
+            if (ringtoneUri == null) return -1
+            val cursor: Cursor = cursor
+            cursor.moveToPosition(-1)
+            while (cursor.moveToNext()) {
+                val uriFromCursor: Uri? = getUriFromCursor(cursor)
+                val token1 = uriFromCursor?.encodedPath?.split("/")!!.last()
+                val token2 = ringtoneUri.path?.split("/")!!.last()
+                if (token1 == token2) {
+                    return cursor.position
+                }
+            }
+        } catch (e: NumberFormatException) {
+        }
+        return -1
+    }
+
+    private fun getUriFromCursor(cursor: Cursor): Uri? {
+        return ContentUris.withAppendedId(
+            Uri.parse(cursor.getString(URI_COLUMN_INDEX)), cursor
+                .getLong(ID_COLUMN_INDEX)
+        )
+    }
+
 
     fun removeKeyboard() {
         val ft = supportFragmentManager.beginTransaction()

@@ -7,9 +7,9 @@
 			android:title="Voice" android:summary="Say a sequence number on alert" />
 		<CheckBoxPreference android:key="ringtone"
 			android:title="Ringtone" android:summary="Play a ringtone on alert" />
-<!--		<RingtonePreference android:key="ringtoneName" android:ringtoneType="all"-->
-<!--			android:title="Select a ringtone" android:showDefault="true" android:dependency="ringtone"-->
-<!--			android:showSilent="true" android:summary="Select a ringtone" />-->
+		<Preference android:key="ringtoneName"
+			android:title="Select a ringtone" android:showDefault="true" android:dependency="ringtone"
+			android:showSilent="true" android:summary="Select a ringtone" />
 		<CheckBoxPreference android:key="vibrate"
 			android:title="Vibrate" android:summary="Vibrate on alert" />
 	</PreferenceCategory>
