@@ -28,7 +28,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:textStyle="bold"
-            android:text="X"
+            android:text="x"
             android:background="@color/cardview_dark_background"
             android:textColor="@color/material_dynamic_neutral90"
             android:textAppearance="?android:attr/textAppearanceMedium" />

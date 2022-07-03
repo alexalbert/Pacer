@@ -14,8 +14,6 @@
         <item name="windowNoTitle">true</item>
     </style>
     <!-- Define other styles to fix theme -->
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <color name="preferencesTextColor">#FFFFFF</color>
     <color name="preferencesBackgroundColor">#202020</color>
