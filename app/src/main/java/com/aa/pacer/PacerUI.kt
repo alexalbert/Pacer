@@ -273,6 +273,7 @@ class PacerUI : AppCompatActivity()  {
         val toolbar = binding.toolbar
         toolbar.background = ColorDrawable(Color.BLACK)
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
         binding.spinner.setAdapter(MySpinnerAdapter(this, R.layout.spinner_row, R.id.spnItemName, mSchemas.get(), mSchemas.get()))
 
