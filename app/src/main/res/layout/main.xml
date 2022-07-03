@@ -7,7 +7,6 @@
 	android:background="@android:color/black"
 	android:weightSum="1.0">
 
-
 	<androidx.appcompat.widget.Toolbar
 		android:id="@+id/toolbar"
 		android:layout_width="match_parent"
@@ -23,8 +22,10 @@
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_horizontal|center_vertical"
 			android:layout_weight="0.3"
-			android:background="@color/cardview_dark_background"
+			android:backgroundTint="#808080"
 			android:entries="@android:array/phoneTypes" />
+
+		android:background="@color/cardview_dark_background"
 
 		<Button
 			android:id="@+id/add"
@@ -232,7 +233,8 @@
 				android:layout_gravity="center"
 				android:layout_marginHorizontal="2dip"
 				android:layout_weight="1"
-				android:background="#808080"
+				android:background="@drawable/roundstyle"
+				android:backgroundTint="#808080"
 				android:focusable="true"
 				android:focusableInTouchMode="false"
 				android:gravity="center"
@@ -248,7 +250,8 @@
 				android:layout_gravity="center"
 				android:layout_marginHorizontal="2dip"
 				android:layout_weight="1"
-				android:background="#808080"
+				android:background="@drawable/roundstyle"
+				android:backgroundTint="#808080"
 				android:focusable="true"
 				android:focusableInTouchMode="false"
 				android:gravity="center"

@@ -16,9 +16,10 @@
             android:layout_width="150dp"
             android:layout_height="match_parent"
             android:layout_weight="9"
+            android:paddingStart="10dp"
             android:layout_marginStart="15dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:background="@color/cardview_dark_background"
+            android:background="#808080"
             android:textColor="@color/cardview_light_background"
             android:textStyle="bold" />
 
@@ -29,7 +30,7 @@
             android:layout_weight="1"
             android:textStyle="bold"
             android:text="x"
-            android:background="@color/cardview_dark_background"
+            android:background="#808080"
             android:textColor="@color/material_dynamic_neutral90"
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
